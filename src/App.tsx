@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import Controller from './components/controller';
 import { merge } from './helpers';
@@ -13,8 +13,6 @@ const App: React.FC<ToneGenerator> = (props) => {
   const audioCtx = new (window.AudioContext)(),
   // state
   [tones, alter] = React.useState(props.tones),
-  [isPlaying, togglePlay] = React.useState(false),
-  [options, updateOptions] = React.useState({volume: 1, mute: !isPlaying}),
   // actions
   addTone = () => {
     const state = tones ? tones : [],
@@ -22,20 +20,21 @@ const App: React.FC<ToneGenerator> = (props) => {
       freq: 500,
       oscillator: audioCtx.createOscillator(),
       gain: audioCtx.createGain(),
-      isPlaying: false,
+      isPlaying: true,
       label: `tone ${tones ? tones.length : 0}`,
       uid: cuid(),
     },
     toMerge = [...state, tone];
     tone.oscillator.connect(tone.gain);
     tone.gain.connect(audioCtx.destination);
+    tone.oscillator.frequency.value = tone.freq;
     tone.oscillator.start();
     return alter(toMerge);
   },
   removeTone = (uid: string) => {
     if (tones) {
       const toRemove = tones.findIndex(tone => tone.uid === uid);
-      tones[toRemove].oscillator.stop();
+      tones[toRemove].isPlaying && tones[toRemove].oscillator.stop();
       const removed = tones.filter((tone) => tone.uid !== uid);
       return alter(removed);
     }
@@ -53,18 +52,13 @@ const App: React.FC<ToneGenerator> = (props) => {
         isPlaying={el.isPlaying}
         label={el.label}
         dismiss={(uid) => removeTone(uid)}
-        updateFreq={(newFreq, node, gain, isPlaying, label, uid) => {
-          const tone: Tone = {
-            freq: newFreq,
-            oscillator: node,
-            gain: gain,
-            isPlaying: isPlaying,
-            label: label,
-            uid: uid,
-          };
+        updateTone={(tone) => {
           if (tones) {
-            const toUpdate = tones.findIndex(tone => tone.uid === uid);
-            tones[toUpdate].oscillator.frequency.value = newFreq;
+            const toUpdate = tones.findIndex((el) => el.uid === tone.uid);
+            tones[toUpdate].oscillator.frequency.value = tone.freq;
+            tones[toUpdate].isPlaying
+              ? tones[toUpdate].gain.gain.setValueAtTime(0, audioCtx.currentTime)
+              : tones[toUpdate].gain.gain.setValueAtTime(1, audioCtx.currentTime);
             return alter(merge(tones, tone));
           }
           return alter([tone]);
@@ -77,7 +71,6 @@ const App: React.FC<ToneGenerator> = (props) => {
     <div className="App">
       <div className="render">{render(tones) || 'Add a tone'}</div>
       <button className="add" onClick={() => addTone()}>Add a tone</button>
-      <button className="isPlaying" onClick={() => togglePlay(!isPlaying)}>{isPlaying ? 'Pause' : 'Play'}</button>
     </div>
   );
 }

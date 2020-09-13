@@ -1,5 +1,5 @@
 export type Tone = {
-    freq: number,
+    freq: any,
     oscillator: OscillatorNode,
     gain: GainNode,
     isPlaying: Boolean,
