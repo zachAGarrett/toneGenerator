@@ -21,12 +21,12 @@ const Controller: React.FC<Controller> = (props) => {
         return updateValues(merged);
     };
     return (
-      <div className="toneController">
-        <div className="headerRow">
-          <h1 className="label">{props.label}</h1>
-          <button className="headerButton" onClick={() => props.dismiss(props.uid)}>X</button>
+      <div className="ToneController">
+        <div className="HeaderRow">
+          <h1 className="Label">{props.label}</h1>
+          <button className="HeaderButton" onClick={() => props.dismiss(props.uid)}>X</button>
         </div>
-        <div className="freqDisplay">
+        <div className="FreqDisplay">
           <div>{props.freq}</div>
           <input
             type="number"
@@ -34,8 +34,8 @@ const Controller: React.FC<Controller> = (props) => {
             onChange={(e) => onTriggerUpdate({freq: e.target.value})}
             placeholder={props.freq.toString() || 'Enter a frequency'}>
           </input>
-      <button className="isPlaying" onClick={() => onTriggerUpdate({isPlaying: !values.isPlaying})}>{values.isPlaying ? 'Pause' : 'Play'}</button>
         </div>
+        <button className="IsPlaying" onClick={() => onTriggerUpdate({isPlaying: !values.isPlaying})}>{values.isPlaying ? 'Pause' : 'Play'}</button>
       </div>
     )
   }

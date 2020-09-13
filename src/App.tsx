@@ -21,7 +21,7 @@ const App: React.FC<ToneGenerator> = (props) => {
       oscillator: audioCtx.createOscillator(),
       gain: audioCtx.createGain(),
       isPlaying: true,
-      label: `tone ${tones ? tones.length : 0}`,
+      label: `tone ${tones ? tones.length + 1 : 1}`,
       uid: cuid(),
     },
     toMerge = [...state, tone];
@@ -69,8 +69,8 @@ const App: React.FC<ToneGenerator> = (props) => {
   // useEffect(() => )
   return (
     <div className="App">
-      <div className="render">{render(tones) || 'Add a tone'}</div>
-      <button className="add" onClick={() => addTone()}>Add a tone</button>
+      <div className="Render">{render(tones) || 'Add a tone'}</div>
+      <button className="Add" onClick={() => addTone()}>Add a tone</button>
     </div>
   );
 }
