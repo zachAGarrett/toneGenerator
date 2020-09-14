@@ -6,6 +6,3 @@ export type Tone = {
     label: string,
     uid: string,
 };
-export interface ToneGenerator {
-    tones?: Tone[]
-  }

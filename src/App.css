@@ -1,7 +1,10 @@
 .App {
   display: flex;
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .Render {
   display: flex;
@@ -17,15 +20,42 @@
   flex: 1;
   flex-direction: column;
   align-self: start;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #78909c;
 }
-.HeaderRow {
+.InputRow {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+.InputRow :first-child {
+  display: flex;
+  flex: 4;
+}
+.InputRow :first-child input {
+  width: 100%;
+  min-width: 0;
+  border-radius: 2px;
+  border: 0.5px solid #78909c;
+}
+.InputRow :nth-child(2) {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+.ButtonRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .FreqDisplay {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .App-logo {
   height: 40vmin;
